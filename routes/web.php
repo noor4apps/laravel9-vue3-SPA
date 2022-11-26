@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\ApplicationController;
 
 /*
 |--------------------------------------------------------------------------
@@ -17,4 +18,6 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::view('admin/dashboard', 'dashboard');
+//Route::view('admin/dashboard', 'dashboard');
+
+Route::get('{view}', ApplicationController::class)->where('view', '(.*)');
