@@ -30,12 +30,17 @@ const editSchema = yup.object({
     }),
 });
 
-const createUser = (values, {resetForm}) => {
+const createUser = (values) => {
     axios.post('/api/users', values).then((response) => {
         users.value.unshift(response.data);
-        resetForm();
-        document.getElementById('close-modal').click();
+        form.value.resetForm();
+        $('#userFormModal').modal('hide');
     })
+};
+
+const addUser = () => {
+    editing.value = false;
+    $('#userFormModal').modal('show');
 };
 
 const updateUser = (values) => {
@@ -43,14 +48,14 @@ const updateUser = (values) => {
         const index = users.value.findIndex(user => user.id === response.data.id);
         users.value[index] = response.data;
         form.value.resetForm();
-        document.getElementById('close-modal').click();
+        $('#userFormModal').modal('hide');
     })
 };
 
 const editUser = (user) => {
     editing.value = true;
     form.value.resetForm();
-    document.getElementById('open-modal').click();
+    $('#userFormModal').modal('show');
     formValues.value = {
         id: user.id,
         name: user.name,
@@ -58,11 +63,11 @@ const editUser = (user) => {
     };
 };
 
-const handleSubmit = (values) => {
+const handleSubmit = (values, actions) => {
     if (editing.value) {
-        updateUser(values);
+        updateUser(values, actions);
     } else {
-        createUser(values);
+        createUser(values, actions);
     }
 };
 
@@ -90,8 +95,7 @@ onMounted(() => {
 
     <div class="content">
         <div class="container-fluid">
-            <button type="button" class="btn btn-primary mb-2" id="open-modal" data-toggle="modal"
-                    data-target="#userFormModal">
+            <button type="button" @click="addUser" class="btn btn-primary mb-2">
                 Add New User
             </button>
             <div class="card">
