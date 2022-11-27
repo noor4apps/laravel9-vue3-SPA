@@ -14,4 +14,17 @@ class UserController extends Controller
 
         return $users;
     }
+
+    public function store(Request $request)
+    {
+        request()->validate([
+            'email' => 'required|unique:users,email',
+        ]);
+
+        $request->merge([
+            'password' => bcrypt($request['password'])
+        ]);
+
+        return User::create($request->all());
+    }
 }
