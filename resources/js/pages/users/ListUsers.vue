@@ -30,11 +30,15 @@ const editSchema = yup.object({
     }),
 });
 
-const createUser = (values) => {
+const createUser = (values, {setErrors}) => {
     axios.post('/api/users', values).then((response) => {
         users.value.unshift(response.data);
         form.value.resetForm();
         $('#userFormModal').modal('hide');
+    }).catch((err) => {
+        if (err.response.data.errors) {
+            setErrors(err.response.data.errors);
+        }
     })
 };
 
@@ -43,12 +47,16 @@ const addUser = () => {
     $('#userFormModal').modal('show');
 };
 
-const updateUser = (values) => {
+const updateUser = (values, {setErrors}) => {
     axios.put('/api/users/' + formValues.value.id, values).then((response) => {
         const index = users.value.findIndex(user => user.id === response.data.id);
         users.value[index] = response.data;
         form.value.resetForm();
         $('#userFormModal').modal('hide');
+    }).catch((err) => {
+        if(err.response.data.errors) {
+            setErrors(err.response.data.errors);
+        }
     })
 };
 
