@@ -71,6 +71,8 @@ return [
 
     'timezone' => 'UTC',
 
+    'date_format' => 'm-d-Y',
+
     /*
     |--------------------------------------------------------------------------
     | Application Locale Configuration
