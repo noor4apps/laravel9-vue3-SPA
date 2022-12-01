@@ -49,6 +49,7 @@ const createUser = (values, {setErrors}) => {
 const addUser = () => {
     editing.value = false;
     $('#userFormModal').modal('show');
+    formValues.value = {};
 };
 
 const updateUser = (values, {setErrors}) => {
